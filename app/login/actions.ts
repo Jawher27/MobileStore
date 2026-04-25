@@ -5,52 +5,68 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export async function login(formData: FormData) {
-  const supabase = await createClient();
+  try {
+    const supabase = await createClient();
 
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+    const data = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    };
 
-  const { error } = await supabase.auth.signInWithPassword(data);
+    const { error } = await supabase.auth.signInWithPassword(data);
 
-  if (error) {
-    return { error: error.message };
+    if (error) {
+      return { error: error.message };
+    }
+
+    revalidatePath("/", "layout");
+    redirect("/");
+  } catch (error) {
+    console.error("Login action failed:", error);
+    return {
+      error:
+        "Configuration Supabase manquante sur le serveur. Vérifiez les variables d'environnement Vercel.",
+    };
   }
-
-  revalidatePath("/", "layout");
-  redirect("/");
 }
 
 export async function signup(formData: FormData) {
-  const supabase = await createClient();
+  try {
+    const supabase = await createClient();
 
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-  const role = (formData.get("role") as string) || "client";
-  const company_name = formData.get("company_name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const role = (formData.get("role") as string) || "client";
+    const company_name = formData.get("company_name") as string;
 
-  if (!email || !password) {
-    return { error: "Email and password are required" };
-  }
+    if (!email || !password) {
+      return { error: "Email and password are required" };
+    }
 
-  const { error, data } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        role: role,
-        company_name: company_name,
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          role: role,
+          company_name: company_name,
+        },
       },
-    },
-  });
+    });
 
-  if (error) {
-    return { error: error.message };
+    if (error) {
+      return { error: error.message };
+    }
+
+    revalidatePath("/", "layout");
+    redirect("/");
+  } catch (error) {
+    console.error("Signup action failed:", error);
+    return {
+      error:
+        "Configuration Supabase manquante sur le serveur. Vérifiez les variables d'environnement Vercel.",
+    };
   }
-
-  revalidatePath("/", "layout");
-  redirect("/");
 }
 
 export async function logout() {
