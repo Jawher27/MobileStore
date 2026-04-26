@@ -411,7 +411,7 @@ export function SupplierAdminView() {
                 </button>
               </div>
             {/* PRODUITS */}
-            <div className="mb-0 md:mb-2 shrink-0">
+            <div className="mb-0 md:mb-2 shrink-0 flex flex-row md:flex-col items-center md:items-stretch gap-2 md:gap-0">
               <button
                 onClick={() => {
                   setCurrentTab("produits");
@@ -438,10 +438,10 @@ export function SupplierAdminView() {
               </button>
 
               {isProductsExpanded && currentTab === "produits" && (
-                <div className="ml-3 mt-1.5 flex-col gap-1 border-l-2 border-slate-100 dark:border-zinc-800 pl-4 py-1 hidden md:flex">
+                <div className="flex flex-row md:flex-col gap-2 md:gap-1 md:ml-3 md:mt-1.5 md:border-l-2 md:border-slate-100 md:dark:border-zinc-800 md:pl-4 md:py-1 items-center md:items-stretch">
                   <button
                     onClick={() => setSelectedCategory(null)}
-                    className={`text-left px-3 py-1.5 text-sm rounded-md transition-colors ${
+                    className={`whitespace-nowrap text-left px-3 py-1.5 text-sm rounded-md transition-colors ${
                       selectedCategory === null
                         ? "bg-slate-100 dark:bg-zinc-800 font-semibold"
                         : "hover:bg-slate-50 dark:hover:bg-zinc-800/50 text-slate-600"
@@ -453,7 +453,7 @@ export function SupplierAdminView() {
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`text-left px-3 py-1.5 text-sm rounded-md transition-colors ${
+                      className={`whitespace-nowrap text-left px-3 py-1.5 text-sm rounded-md transition-colors ${
                         selectedCategory === cat
                           ? "bg-slate-100 dark:bg-zinc-800 font-semibold"
                           : "hover:bg-slate-50 dark:hover:bg-zinc-800/50 text-slate-600"
@@ -491,7 +491,7 @@ export function SupplierAdminView() {
             </div>
 
             {/* FACTURES & HISTORIQUE */}
-            <div className="shrink-0">
+            <div className="shrink-0 flex flex-row md:flex-col items-center md:items-stretch gap-2 md:gap-0">
               <button
                 onClick={() => {
                   if (
@@ -525,16 +525,17 @@ export function SupplierAdminView() {
 
               {isFacturesExpanded &&
                 (currentTab === "factures" || currentTab === "historique") && (
-                  <div className="ml-3 mt-1.5 flex-col gap-1 border-l-2 border-slate-100 dark:border-zinc-800 pl-4 py-1 hidden md:flex">
+                  <div className="flex flex-row md:flex-col gap-2 md:gap-1 md:ml-3 md:mt-1.5 md:border-l-2 md:border-slate-100 md:dark:border-zinc-800 md:pl-4 md:py-1 items-center md:items-stretch">
                     <button
                       onClick={() => setCurrentTab("factures")}
-                      className={`flex items-center justify-between px-3 py-1.5 text-sm rounded-md transition-colors ${
+                      className={`whitespace-nowrap flex items-center justify-between px-3 py-1.5 text-sm rounded-md transition-colors gap-2 ${
                         currentTab === "factures"
                           ? "bg-slate-100 dark:bg-zinc-800 font-semibold"
                           : "hover:bg-slate-50 dark:hover:bg-zinc-800/50 text-slate-600"
                       }`}
                     >
-                      <span>À facturer / Livrées</span>
+                      <span className="hidden md:inline">À facturer / Livrées</span>
+                      <span className="md:hidden">À facturer</span>
                       {deliveringOrders.length > 0 && (
                         <span className="text-xs font-bold text-blue-600 bg-blue-100 px-1.5 rounded">
                           {deliveringOrders.length}
@@ -543,14 +544,15 @@ export function SupplierAdminView() {
                     </button>
                     <button
                       onClick={() => setCurrentTab("historique")}
-                      className={`flex items-center gap-2 px-3 py-1.5 text-sm rounded-md transition-colors ${
+                      className={`whitespace-nowrap flex items-center gap-2 px-3 py-1.5 text-sm rounded-md transition-colors ${
                         currentTab === "historique"
                           ? "bg-slate-100 dark:bg-zinc-800 font-semibold"
                           : "hover:bg-slate-50 dark:hover:bg-zinc-800/50 text-slate-600"
                       }`}
                     >
                       <History size={14} className="opacity-70" />
-                      <span>Historique Payé</span>
+                      <span className="hidden md:inline">Historique Payé</span>
+                      <span className="md:hidden">Historique</span>
                     </button>
                   </div>
                 )}
