@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { isRedirectError } from "next/dist/client/components/redirect";
 import { createClient } from "@/lib/supabase/server";
 
 export async function login(formData: FormData) {
@@ -22,6 +23,9 @@ export async function login(formData: FormData) {
     revalidatePath("/", "layout");
     redirect("/");
   } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
+    }
     console.error("Login action failed:", error);
     return {
       error:
@@ -61,6 +65,9 @@ export async function signup(formData: FormData) {
     revalidatePath("/", "layout");
     redirect("/");
   } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
+    }
     console.error("Signup action failed:", error);
     return {
       error:
