@@ -366,7 +366,7 @@ export function SupplierAdminView() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden text-black dark:text-white bg-slate-50 dark:bg-zinc-950 relative">
+    <div className="flex flex-col md:flex-row h-[calc(100vh-140px)] md:h-screen overflow-hidden text-black dark:text-white bg-slate-50 dark:bg-zinc-950 relative rounded-lg md:rounded-none border md:border-0 shadow-sm md:shadow-none">
       {/* 
         ========================================
         LA FENÊTRE D'IMPRESSION (cachée par défaut)
@@ -381,16 +381,17 @@ export function SupplierAdminView() {
         LE CONTENU NORMAL DE LA PAGE (caché à l'impression)
         ========================================
       */}
-      <div className="flex w-full h-full print:hidden">
+      <div className="flex flex-col md:flex-row w-full h-full print:hidden">
         {/* Sidebar */}
-        <aside className="w-64 border-r bg-white dark:bg-zinc-900 flex flex-col z-10 shadow-sm relative">
-          <div className="p-5 border-b border-slate-100 dark:border-zinc-800 shrink-0">
+        <aside className="w-full md:w-64 border-b md:border-r border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col z-10 shadow-sm relative shrink-0">
+          <div className="p-4 md:p-5 border-b border-slate-100 dark:border-zinc-800 hidden md:block shrink-0">
             <h2 className="font-bold text-xl text-primary tracking-tight">
               Fournisseur
             </h2>
           </div>
-          <nav className="flex-1 p-4 overflow-y-auto space-y-1">              {/* DASHBOARD */}
-              <div className="mb-2">
+          <nav className="flex-1 p-2 md:p-4 overflow-x-auto md:overflow-y-auto overflow-y-hidden md:overflow-x-hidden flex flex-row md:flex-col gap-2 md:space-y-1 scrollbar-hide shrink-0 min-h-[60px] md:min-h-0 bg-white dark:bg-zinc-900 border-b md:border-b-0">
+              {/* DASHBOARD */}
+              <div className="mb-0 md:mb-2 shrink-0">
                 <button
                   onClick={() => {
                     setCurrentTab("dashboard");
@@ -403,14 +404,14 @@ export function SupplierAdminView() {
                       : "hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300"
                   }`}
                 >
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center justify-center md:justify-start gap-2.5 w-full">
                     <LayoutDashboard size={18} />
-                    <span>Tableau de Bord</span>
+                    <span className="hidden md:inline">Tableau de Bord</span>
                   </div>
                 </button>
               </div>
             {/* PRODUITS */}
-            <div className="mb-2">
+            <div className="mb-0 md:mb-2 shrink-0">
               <button
                 onClick={() => {
                   setCurrentTab("produits");
@@ -423,19 +424,21 @@ export function SupplierAdminView() {
                     : "hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300"
                 }`}
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center justify-center md:justify-start gap-2.5 w-full md:w-auto">
                   <Package size={18} />
-                  <span>Catalogue / Stock</span>
+                  <span className="hidden md:inline">Catalogue / Stock</span>
                 </div>
-                {isProductsExpanded ? (
-                  <ChevronDown size={14} />
-                ) : (
-                  <ChevronRight size={14} />
-                )}
+                <div className="hidden md:block">
+                  {isProductsExpanded ? (
+                    <ChevronDown size={14} />
+                  ) : (
+                    <ChevronRight size={14} />
+                  )}
+                </div>
               </button>
 
               {isProductsExpanded && currentTab === "produits" && (
-                <div className="ml-3 mt-1.5 flex flex-col gap-1 border-l-2 border-slate-100 dark:border-zinc-800 pl-4 py-1">
+                <div className="ml-3 mt-1.5 flex-col gap-1 border-l-2 border-slate-100 dark:border-zinc-800 pl-4 py-1 hidden md:flex">
                   <button
                     onClick={() => setSelectedCategory(null)}
                     className={`text-left px-3 py-1.5 text-sm rounded-md transition-colors ${
@@ -463,30 +466,32 @@ export function SupplierAdminView() {
               )}
             </div>
 
-            <div className="h-px bg-slate-100 dark:bg-zinc-800 my-4" />
+            <div className="w-px h-auto md:w-full md:h-px shrink-0 bg-slate-100 dark:bg-zinc-800 mx-2 md:my-4 md:mx-0" />
 
             {/* COMMANDES */}
-            <button
-              onClick={() => setCurrentTab("commandes")}
-              className={`flex items-center justify-between w-full p-2.5 rounded-lg transition-colors font-medium text-sm mb-2 ${
-                currentTab === "commandes"
-                  ? "bg-primary/10 text-primary"
-                  : "hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300"
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <ShoppingCart size={18} />
-                <span>Commandes</span>
-              </div>
-              {pendingOrders.length > 0 && (
-                <Badge className="bg-amber-500 hover:bg-amber-600 text-white rounded-md px-1.5 py-0 min-w-[20px] justify-center">
-                  {pendingOrders.length}
-                </Badge>
-              )}
-            </button>
+            <div className="mb-0 md:mb-2 shrink-0">
+              <button
+                onClick={() => setCurrentTab("commandes")}
+                className={`flex flex-row items-center justify-center md:justify-between w-auto md:w-full p-2.5 rounded-lg transition-colors font-medium text-sm gap-2 ${
+                  currentTab === "commandes"
+                    ? "bg-primary/10 text-primary"
+                    : "hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300"
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <ShoppingCart size={18} />
+                  <span className="hidden md:inline">Commandes</span>
+                </div>
+                {pendingOrders.length > 0 && (
+                  <Badge className="bg-amber-500 hover:bg-amber-600 text-white rounded-md px-1.5 py-0 min-w-[20px] justify-center">
+                    {pendingOrders.length}
+                  </Badge>
+                )}
+              </button>
+            </div>
 
             {/* FACTURES & HISTORIQUE */}
-            <div>
+            <div className="shrink-0">
               <button
                 onClick={() => {
                   if (
@@ -499,7 +504,7 @@ export function SupplierAdminView() {
                     setIsFacturesExpanded(!isFacturesExpanded);
                   }
                 }}
-                className={`flex items-center justify-between w-full p-2.5 rounded-lg transition-colors font-medium text-sm ${
+                className={`flex flex-row items-center justify-center md:justify-between w-auto md:w-full p-2.5 rounded-lg transition-colors font-medium text-sm gap-2 ${
                   currentTab === "factures" || currentTab === "historique"
                     ? "bg-primary/10 text-primary"
                     : "hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300"
@@ -507,18 +512,20 @@ export function SupplierAdminView() {
               >
                 <div className="flex items-center gap-2.5">
                   <FileText size={18} />
-                  <span>Facturation / CA</span>
+                  <span className="hidden md:inline">Facturation / CA</span>
                 </div>
-                {isFacturesExpanded ? (
-                  <ChevronDown size={14} />
-                ) : (
-                  <ChevronRight size={14} />
-                )}
+                <div className="hidden md:block">
+                  {isFacturesExpanded ? (
+                    <ChevronDown size={14} />
+                  ) : (
+                    <ChevronRight size={14} />
+                  )}
+                </div>
               </button>
 
               {isFacturesExpanded &&
                 (currentTab === "factures" || currentTab === "historique") && (
-                  <div className="ml-3 mt-1.5 flex flex-col gap-1 border-l-2 border-slate-100 dark:border-zinc-800 pl-4 py-1">
+                  <div className="ml-3 mt-1.5 flex-col gap-1 border-l-2 border-slate-100 dark:border-zinc-800 pl-4 py-1 hidden md:flex">
                     <button
                       onClick={() => setCurrentTab("factures")}
                       className={`flex items-center justify-between px-3 py-1.5 text-sm rounded-md transition-colors ${
